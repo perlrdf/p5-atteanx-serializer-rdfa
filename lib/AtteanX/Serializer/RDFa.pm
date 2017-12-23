@@ -52,7 +52,7 @@ AtteanX::Serializer::RDFa - RDFa Serializer for Attean
 =head1 BUGS
 
 Please report any bugs to
-L<http://rt.cpan.org/Dist/Display.html?Queue=AtteanX-Serializer-RDFa>.
+L<https://github.com/kjetilk/p5-atteanx-serializer-rdfa/issues>.
 
 =head1 SEE ALSO
 
