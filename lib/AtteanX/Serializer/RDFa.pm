@@ -13,6 +13,7 @@ use Encode qw(encode);
 use Scalar::Util qw(blessed);
 use Attean::ListIterator;
 use namespace::clean;
+use Attean::RDF qw(iri);
  
 has 'canonical_media_type' => (is => 'ro', isa => Str, init_arg => undef, default => 'application/xhtml+xml');
 
@@ -27,7 +28,11 @@ sub serialize_iter_to_io {
 
 sub serialize_iter_to_bytes {
   my ($self, $iter) = @_;
-  return $data;
+  my $store = Attean->get_store('Memory')->new();
+  $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
+  my $model = Attean::QuadModel->new( store => $store );
+  my $document = RDF::RDFa::Generator->create_document($model);
+  return $document->toString;
 }
 
 with 'Attean::API::TripleSerializer';
