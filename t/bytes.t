@@ -17,21 +17,21 @@ use Attean::RDF qw(iri);
 my $store = Attean->get_store('Memory')->new();
 my $parser = Attean->get_parser('Turtle')->new(base=>'http://example.org/');
 
-my $iter = $parser->parse_iter_from_bytes('<http://example.org/foo> a <http://example.org/Bar> ; <http://example.org/title> "Dahut"@fr ; <http://example.org/something> [ <http://example.org/else> "Foo" ; <http://example.org/pi> 3.14 ] .');
-
-$store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
-my $model = Attean::QuadModel->new( store => $store );
+my $iter = $parser->parse_iter_from_bytes('<http://example.org/foo> a <http://example.org/Bar> ; <http://example.org/title> "Dahut"@fr ; <http://example.org/something> [ <http://example.org/else> "Foo" ; <http://example.org/pi> 3.14 ] .')->materialize;
 
 
 subtest 'Default generator' => sub {
-  ok(my $document = RDF::RDFa::Generator->new->create_document($model), 'Assignment OK');
-  my $string = tests($document);
+  ok(my $ser = Attean->get_serializer('RDFa')->new, 'Assignment OK');
+  my $string = tests($ser);
   like($string, qr|<link|, 'link element just local part');
   like($string, qr|resource="http://example.org/Bar"|, 'Object present');
   like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
 };
 
+done_testing;
+exit 1;
 
+my $model;
 subtest 'Hidden generator' => sub {
   ok(my $document = RDF::RDFa::Generator::HTML::Hidden->new->create_document($model), 'Assignment OK');
   my $string = tests($document);
@@ -63,9 +63,8 @@ subtest 'Pretty generator with Note' => sub {
 
 
 sub tests {
-  my $document = shift;
-  isa_ok($document, 'XML::LibXML::Document');
-  my $string = $document->toString;
+  my $ser = shift;
+  my $string = $ser->serialize_iter_to_bytes($iter);
   like($string, qr|about="http://example.org/foo"|, 'Subject URI present');
   like($string, qr|rel="rdf:type"|, 'Type predicate present');
   like($string, qr|property="ex:pi"|, 'pi predicate present');
