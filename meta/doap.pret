@@ -12,9 +12,9 @@
     :support-forum        <irc://irc.perl.org/#perlrdf> ;
     :repository           [
         a :GitRepository;
-        :browse <https://github.com/kjetilk/p5-atteanx-serializer-rdfa>
+        :browse <https://github.com/kjetilk/p5-atteanx-serializer-rdfa> ;
         prov:has_provenance <http://git2prov.org/git2prov?giturl=https%3A%2F%2Fgithub.com%2Fkjetilk%2Fp5-atteanx-serializer-rdfa&serialization=PROV-O#>
-    ] ;];
+    ] ;
     :created              2017-12-22;
     :license              <http://dev.perl.org/licenses/>;
     :maintainer           cpan:KJETILK;
