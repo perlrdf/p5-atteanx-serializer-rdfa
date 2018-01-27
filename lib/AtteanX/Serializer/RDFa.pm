@@ -31,12 +31,14 @@ sub serialize_iter_to_bytes {
   my $store = Attean->get_store('Memory')->new();
   $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
   my $model = Attean::QuadModel->new( store => $store );
-  my $document = RDF::RDFa::Generator->create_document($model);
+  my %opts = (namespacemap => $self->namespaces,
+				  base => $self->base);
+  my $document = RDF::RDFa::Generator->new(%opts)->create_document($model);
   return $document->toString;
 }
 
 with 'Attean::API::TripleSerializer';
-#with 'Attean::API::AbbreviatingSerializer';
+with 'Attean::API::AbbreviatingSerializer';
 
 1;
 

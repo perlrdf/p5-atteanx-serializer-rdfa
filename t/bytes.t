@@ -13,6 +13,7 @@ BEGIN {
 }
 
 use Attean::RDF qw(iri);
+use URI::NamespaceMap;
 
 my $store = Attean->get_store('Memory')->new();
 my $parser = Attean->get_parser('Turtle')->new(base=>'http://example.org/');
@@ -28,8 +29,23 @@ subtest 'Default generator' => sub {
   like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
 };
 
+subtest 'Default generator with base and namespacemap' => sub {
+  my $ns = URI::NamespaceMap->new(['foaf']);
+  $iter->reset;
+  ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+																	namespaces => $ns)
+	  , 'Assignment OK');
+  my $string = tests($ser);
+  print STDERR $string;
+  like($string, qr|xmlns:foaf="http://xmlns.com/foaf/0.1/"|, 'FOAF is in there');
+  unlike($string, qr|xmlns:hydra="http://www.w3.org/ns/hydra/core#"|, 'But not hydra');
+  like($string, qr|resource="http://example.org/Bar"|, 'Object present');
+  like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
+};
+
+
 done_testing;
-exit 1;
+exit 0;
 
 my $model;
 subtest 'Hidden generator' => sub {
