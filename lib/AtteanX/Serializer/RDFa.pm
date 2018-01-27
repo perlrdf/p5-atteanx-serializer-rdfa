@@ -11,6 +11,7 @@ use Moo;
 use Types::Standard qw(Str ArrayRef HashRef);
 use Encode qw(encode);
 use Scalar::Util qw(blessed);
+use Attean;
 use Attean::ListIterator;
 use namespace::clean;
 use Attean::RDF qw(iri);
