@@ -21,7 +21,7 @@ has 'canonical_media_type' => (is => 'ro', isa => Str, init_arg => undef, defaul
 
 has 'style' => (is => 'ro', isa => Maybe[Str]); # TODO: might be improved with OptList?
 
-has 'generator_options' => (is => 'ro', isa => Maybe[HashRef]);
+has 'generator_options' => (is => 'ro', isa => HashRef, default => sub { return {} });
 
 has _opts => (is => 'rw', isa => HashRef, lazy => 1, builder => '_build_opts');
 
@@ -51,7 +51,7 @@ sub serialize_iter_to_bytes {
   my $store = Attean->get_store('Memory')->new();
   $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
   my $model = Attean::QuadModel->new( store => $store );
-  my $document = RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model);
+  my $document = RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model, %{$self->generator_options});
   return $document->toString;
 }
 
