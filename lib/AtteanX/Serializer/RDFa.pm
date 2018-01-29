@@ -55,6 +55,8 @@ sub _make_document {
 
 sub serialize_iter_to_io {
   my ($self, $io, $iter) = @_;
+  my $document = $self->_make_document($iter);
+  return $document->toFH($io);
 
 }
 
