@@ -33,9 +33,10 @@ subtest 'Default generator' => sub {
   like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
 };
 
+my $ns = URI::NamespaceMap->new( { ex => iri('http://example.org/') });
+$ns->guess_and_add('foaf');
+
 subtest 'Default generator with base and namespacemap' => sub {
-  my $ns = URI::NamespaceMap->new( { ex => iri('http://example.org/') });
-  $ns->guess_and_add('foaf');
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns)
@@ -49,24 +50,50 @@ subtest 'Default generator with base and namespacemap' => sub {
 
 
 subtest 'Hidden generator' => sub {
-  ok(my $document = RDF::RDFa::Generator::HTML::Hidden->new->create_document($model), 'Assignment OK');
-  my $string = tests($document);
+  $iter->reset;
+  ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+																	namespaces => $ns,
+																	generator => 'HTML::Hidden'),
+	  'Assignment OK');
+  my $string = tests($ser);
   like($string, qr|<body>\s?<i|, 'i element just local part');
   like($string, qr|resource="http://example.org/Bar"|, 'Object present');
   like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
 };
 
 subtest 'Pretty generator' => sub {
-  ok(my $document = RDF::RDFa::Generator::HTML::Pretty->new->create_document($model), 'Assignment OK');
-  my $string = tests($document);
+  $iter->reset;
+  ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+																	namespaces => $ns,
+																	generator => 'HTML::Pretty'), 'Assignment OK');
+  my $string = tests($ser);
   like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
 };
 
 subtest 'Pretty generator with interlink' => sub {
-  ok(my $document = RDF::RDFa::Generator::HTML::Pretty->new()->create_document($model, interlink => 1, id_prefix => 'test'), 'Assignment OK');
-  my $string = tests($document);
+  $iter->reset;
+  ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+																	namespaces => $ns,
+																	generator => 'HTML::Pretty',
+																	generator_options => { interlink => 1,
+																								  id_prefix => 'test' }),
+	  'Assignment OK');
+  my $string = tests($ser);
   like($string, qr|<main>\s?<div|, 'div element just local part');
   like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
+};
+
+subtest 'Pretty generator with Note' => sub {
+  ok(my $note = RDF::RDFa::Generator::HTML::Pretty::Note->new(iri('http://example.org/foo'), 'This is a Note'), 'Note creation OK');
+  $iter->reset;
+  ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+																	namespaces => $ns,
+																	generator => 'HTML::Pretty',
+																	generator_options => { notes => [$note]}),
+	  'Assignment OK');
+  my $string = tests($ser);
+  like($string, qr|<aside>|, 'aside element found');
+  like($string, qr|This is a Note|, 'Note text found');
 };
 
 
