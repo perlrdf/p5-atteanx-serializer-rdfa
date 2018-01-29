@@ -34,7 +34,7 @@ subtest 'Default generator' => sub {
 };
 
 subtest 'Default generator with base and namespacemap' => sub {
-  my $ns = URI::NamespaceMap->new(ex => iri('http://example.org'));
+  my $ns = URI::NamespaceMap->new(ex => iri('http://example.org/'));
   $ns->guess_and_add('foaf');
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
