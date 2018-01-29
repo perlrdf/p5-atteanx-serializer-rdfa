@@ -41,6 +41,7 @@ subtest 'Default generator with base and namespacemap' => sub {
 																	namespaces => $ns)
 	  , 'Assignment OK');
   my $string = tests($ser);
+  print $string;
   like($string, qr|xmlns:foaf="http://xmlns.com/foaf/0.1/"|, 'FOAF is in there');
   unlike($string, qr|xmlns:hydra="http://www.w3.org/ns/hydra/core#"|, 'But not hydra');
   like($string, qr|resource="http://example.org/Bar"|, 'Object present');
