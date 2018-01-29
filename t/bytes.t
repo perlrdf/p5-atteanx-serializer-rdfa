@@ -55,7 +55,7 @@ subtest 'Hidden generator' => sub {
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns,
-																	generator => 'HTML::Hidden'),
+																	style => 'HTML::Hidden'),
 	  'Assignment OK');
   my $string = tests($ser);
   like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Hidden"/>|, 'Hidden generator is correct');
@@ -68,7 +68,7 @@ subtest 'Pretty generator' => sub {
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns,
-																	generator => 'HTML::Pretty'), 'Assignment OK');
+																	style => 'HTML::Pretty'), 'Assignment OK');
   my $string = tests($ser);
   like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Pretty"/>|, 'Pretty generator is correct');
   like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
@@ -78,7 +78,7 @@ subtest 'Pretty generator with interlink' => sub {
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns,
-																	generator => 'HTML::Pretty',
+																	style => 'HTML::Pretty',
 																	generator_options => { interlink => 1,
 																								  id_prefix => 'test' }),
 	  'Assignment OK');
@@ -92,7 +92,7 @@ subtest 'Pretty generator with Note' => sub {
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns,
-																	generator => 'HTML::Pretty',
+																	style => 'HTML::Pretty',
 																	generator_options => { notes => [$note]}),
 	  'Assignment OK');
   my $string = tests($ser);
