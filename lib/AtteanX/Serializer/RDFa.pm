@@ -8,7 +8,7 @@ our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.001';
 
 use Moo;
-use Types::Standard qw(Str Maybe HashRef);
+use Types::Standard qw(Str Maybe HashRef ConsumerOf);
 use Encode qw(encode);
 use Scalar::Util qw(blessed);
 use Attean;
@@ -16,7 +16,10 @@ use Attean::ListIterator;
 use namespace::clean;
 use Attean::RDF qw(iri);
 use RDF::RDFa::Generator;
- 
+
+with 'Attean::API::TripleSerializer';
+with 'Attean::API::AbbreviatingSerializer';
+
 has 'canonical_media_type' => (is => 'ro', isa => Str, init_arg => undef, default => 'application/xhtml+xml');
 
 has 'style' => (is => 'ro', isa => Maybe[Str]); # TODO: might be improved with OptList?
@@ -54,9 +57,6 @@ sub serialize_iter_to_bytes {
   my $document = RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model, %{$self->generator_options});
   return $document->toString;
 }
-
-with 'Attean::API::TripleSerializer';
-with 'Attean::API::AbbreviatingSerializer';
 
 1;
 
