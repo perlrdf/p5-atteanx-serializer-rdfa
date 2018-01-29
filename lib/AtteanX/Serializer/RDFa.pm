@@ -17,10 +17,11 @@ use namespace::clean;
 use Attean::RDF qw(iri);
 use RDF::RDFa::Generator;
 
-with 'Attean::API::TripleSerializer';
-with 'Attean::API::AbbreviatingSerializer';
 
 has 'canonical_media_type' => (is => 'ro', isa => Str, init_arg => undef, default => 'application/xhtml+xml');
+
+with 'Attean::API::TripleSerializer';
+with 'Attean::API::AbbreviatingSerializer';
 
 has 'style' => (is => 'ro', isa => Maybe[Str]); # TODO: might be improved with OptList?
 
@@ -44,6 +45,14 @@ sub media_types {
   return [qw(application/xhtml+xml text/html)];
 }
 
+sub _make_document {
+  my ($self, $iter) = @_;
+  my $store = Attean->get_store('Memory')->new();
+  $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
+  my $model = Attean::QuadModel->new( store => $store );
+  return RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model, %{$self->generator_options});
+}
+
 sub serialize_iter_to_io {
   my ($self, $io, $iter) = @_;
 
@@ -51,10 +60,7 @@ sub serialize_iter_to_io {
 
 sub serialize_iter_to_bytes {
   my ($self, $iter) = @_;
-  my $store = Attean->get_store('Memory')->new();
-  $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
-  my $model = Attean::QuadModel->new( store => $store );
-  my $document = RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model, %{$self->generator_options});
+  my $document = $self->_make_document($iter);
   return $document->toString;
 }
 
