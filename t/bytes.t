@@ -48,10 +48,6 @@ subtest 'Default generator with base and namespacemap' => sub {
 };
 
 
-done_testing;
-exit 0;
-
-my $model;
 subtest 'Hidden generator' => sub {
   ok(my $document = RDF::RDFa::Generator::HTML::Hidden->new->create_document($model), 'Assignment OK');
   my $string = tests($document);
@@ -71,14 +67,6 @@ subtest 'Pretty generator with interlink' => sub {
   my $string = tests($document);
   like($string, qr|<main>\s?<div|, 'div element just local part');
   like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
-};
-
-subtest 'Pretty generator with Note' => sub {
-  ok(my $note = RDF::RDFa::Generator::HTML::Pretty::Note->new(iri('http://example.org/foo'), 'This is a Note'), 'Note creation OK');
-  ok(my $document = RDF::RDFa::Generator::HTML::Pretty->new->create_document($model, notes => [$note]), 'Assignment OK');
-  my $string = tests($document);
-  like($string, qr|<aside>|, 'aside element found');
-  like($string, qr|This is a Note|, 'Note text found');
 };
 
 
