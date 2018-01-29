@@ -14,6 +14,9 @@ BEGIN {
 
 use Attean::RDF qw(iri);
 use URI::NamespaceMap;
+use Module::Load::Conditional qw[check_install];
+
+my $rdfns = check_install( module => 'RDF::NS', version => 20130802);
 
 my $store = Attean->get_store('Memory')->new();
 my $parser = Attean->get_parser('Turtle')->new(base=>'http://example.org/');
@@ -22,6 +25,7 @@ my $iter = $parser->parse_iter_from_bytes('<http://example.org/foo> a <http://ex
 
 
 subtest 'Default generator' => sub {
+  plan skip_all => 'RDF::NS is not installed' unless $rdfns;
   ok(my $ser = Attean->get_serializer('RDFa')->new, 'Assignment OK');
   my $string = tests($ser);
   like($string, qr|<link|, 'link element just local part');
@@ -30,7 +34,8 @@ subtest 'Default generator' => sub {
 };
 
 subtest 'Default generator with base and namespacemap' => sub {
-  my $ns = URI::NamespaceMap->new(['foaf']);
+  my $ns = URI::NamespaceMap->new(ex => iri('http://example.org'));
+  $ns->guess_and_add('foaf');
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns)

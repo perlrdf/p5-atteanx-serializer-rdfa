@@ -4,6 +4,7 @@
 
 `AtteanX-Serializer-RDFa`
     :test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
+    :test-requirement       [ :on "Module::Load::Conditional"^^:CpanId ];
     :runtime-requirement    [ :on "perl 5.010001"^^:CpanId ];
     :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];
     :runtime-requirement    [ :on "Attean"^^:CpanId ];
