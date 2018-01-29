@@ -28,6 +28,7 @@ subtest 'Default generator' => sub {
   plan skip_all => 'RDF::NS is not installed' unless $rdfns;
   ok(my $ser = Attean->get_serializer('RDFa')->new, 'Assignment OK');
   my $string = tests($ser);
+  like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Head"/>|, 'Head generator is correct');
   like($string, qr|<link|, 'link element just local part');
   like($string, qr|resource="http://example.org/Bar"|, 'Object present');
   like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
@@ -42,6 +43,7 @@ subtest 'Default generator with base and namespacemap' => sub {
 																	namespaces => $ns)
 	  , 'Assignment OK');
   my $string = tests($ser);
+  like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Head"/>|, 'Head generator is correct');
   like($string, qr|xmlns:foaf="http://xmlns.com/foaf/0.1/"|, 'FOAF is in there');
   unlike($string, qr|xmlns:hydra="http://www.w3.org/ns/hydra/core#"|, 'But not hydra');
   like($string, qr|resource="http://example.org/Bar"|, 'Object present');
@@ -56,6 +58,7 @@ subtest 'Hidden generator' => sub {
 																	generator => 'HTML::Hidden'),
 	  'Assignment OK');
   my $string = tests($ser);
+  like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Hidden"/>|, 'Hidden generator is correct');
   like($string, qr|<body>\s?<i|, 'i element just local part');
   like($string, qr|resource="http://example.org/Bar"|, 'Object present');
   like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
@@ -67,6 +70,7 @@ subtest 'Pretty generator' => sub {
 																	namespaces => $ns,
 																	generator => 'HTML::Pretty'), 'Assignment OK');
   my $string = tests($ser);
+  like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Pretty"/>|, 'Pretty generator is correct');
   like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
 };
 
@@ -92,6 +96,7 @@ subtest 'Pretty generator with Note' => sub {
 																	generator_options => { notes => [$note]}),
 	  'Assignment OK');
   my $string = tests($ser);
+  like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Pretty"/>|, 'Pretty generator is correct');
   like($string, qr|<aside>|, 'aside element found');
   like($string, qr|This is a Note|, 'Note text found');
 };
