@@ -36,8 +36,6 @@ subtest 'Default generator' => sub {
 subtest 'Default generator with base and namespacemap' => sub {
   my $ns = URI::NamespaceMap->new( { ex => iri('http://example.org/') });
   $ns->guess_and_add('foaf');
-  use Data::Dumper;
-  note Dumper($ns->list_namespaces);
   $iter->reset;
   ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
 																	namespaces => $ns)
