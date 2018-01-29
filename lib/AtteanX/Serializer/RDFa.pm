@@ -8,15 +8,34 @@ our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.001';
 
 use Moo;
-use Types::Standard qw(Str ArrayRef HashRef);
+use Types::Standard qw(Str Maybe HashRef);
 use Encode qw(encode);
 use Scalar::Util qw(blessed);
 use Attean;
 use Attean::ListIterator;
 use namespace::clean;
 use Attean::RDF qw(iri);
+use RDF::RDFa::Generator;
  
 has 'canonical_media_type' => (is => 'ro', isa => Str, init_arg => undef, default => 'application/xhtml+xml');
+
+has 'style' => (is => 'ro', isa => Maybe[Str]); # TODO: might be improved with OptList?
+
+has 'generator_options' => (is => 'ro', isa => Maybe[HashRef]);
+
+has _opts => (is => 'rw', isa => HashRef, lazy => 1, builder => '_build_opts');
+
+sub _build_opts {
+  my $self = shift;
+  my $base = defined($self->base) ? $self->base->abs : undef;
+  my %opts = (
+				  style => $self->style,
+				  namespacemap => $self->namespaces,
+				  base => $base
+				 );
+  return \%opts;
+}
+
 
 sub media_types {
   return [qw(application/xhtml+xml text/html)];
@@ -32,9 +51,7 @@ sub serialize_iter_to_bytes {
   my $store = Attean->get_store('Memory')->new();
   $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
   my $model = Attean::QuadModel->new( store => $store );
-  my %opts = (namespacemap => $self->namespaces,
-				  base => $self->base);
-  my $document = RDF::RDFa::Generator->new(%opts)->create_document($model);
+  my $document = RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model);
   return $document->toString;
 }
 
