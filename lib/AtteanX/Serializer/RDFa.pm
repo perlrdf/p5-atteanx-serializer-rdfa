@@ -5,7 +5,7 @@ use warnings;
 package AtteanX::Serializer::RDFa;
 
 our $AUTHORITY = 'cpan:KJETILK';
-our $VERSION   = '0.001';
+our $VERSION   = '0.001_01';
 
 use Moo;
 use Types::Standard qw(Str Maybe HashRef ConsumerOf);
@@ -80,7 +80,69 @@ AtteanX::Serializer::RDFa - RDFa Serializer for Attean
 
 =head1 SYNOPSIS
 
+ use Attean;
+ use Attean::RDF qw(iri);
+ use URI::NamespaceMap;
+ 
+ my $ser = Attean->get_serializer('RDFa')->new;
+ my $string = $ser->serialize_iter_to_bytes($iter);
+ 
+ my $ns = URI::NamespaceMap->new( { ex => iri('http://example.org/') });
+ $ns->guess_and_add('foaf');
+ my $note = RDF::RDFa::Generator::HTML::Pretty::Note->new(iri('http://example.org/foo'), 'This is a Note');
+ my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+															  namespaces => $ns,
+															  style => 'HTML::Pretty',
+															  generator_options => { notes => [$note]});
+ $ser->serialize_iter_to_io($fh, $iter);
+
+
+
 =head1 DESCRIPTION
+
+This module can be used to serialize RDFa with several different
+styles. It is implemented using L<Attean> to wrap around
+L<RDF::RDFa::Generator>, which does the heavy lifting.  It composes
+L<Attean::API::TripleSerializer> and
+L<Attean::API::AbbreviatingSerializer>.
+
+=head1 METHODS AND ATTRIBUTES
+
+=head2 Attributes
+
+=over
+
+In addition to attributes required by L<Attean::API::TripleSerializer>
+that should not be a concern to users, the following attributes can be
+set:
+
+=item C<< style >>
+
+This attribute sets the serialization style used by
+L<RDF::RDFa::Generator>, see its documentation for details.
+
+=item C<< namespaces >>
+
+A HASH reference mapping prefix strings to L<URI::NamespaceMap>
+objects. L<RDF::RDFa::Generator> will help manage this map, see its
+documentation for details.
+
+=item C<< base >>
+
+An L<Attean::API::IRI> object representing the base against which
+relative IRIs in the serialized data should be resolved. There is some
+support in L<RDF::RDFa::Generator>, but currently, it doesn't do much.
+
+=item C<< generator_options >>
+
+A HASH reference that will be passed as options to
+L<RDF::RDFa::Generator>'s C<create_document> method. This is typically
+options that are specific to different styles, see synopsis for
+example.
+
+=back
+
+
 
 =head1 BUGS
 
@@ -88,6 +150,8 @@ Please report any bugs to
 L<https://github.com/kjetilk/p5-atteanx-serializer-rdfa/issues>.
 
 =head1 SEE ALSO
+
+L<RDF::RDFa::Generator>, L<RDF::Trine::Serializer::RDFa>.
 
 =head1 AUTHOR
 
