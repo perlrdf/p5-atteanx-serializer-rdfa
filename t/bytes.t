@@ -71,7 +71,7 @@ subtest 'Pretty generator' => sub {
 																	style => 'HTML::Pretty'), 'Assignment OK');
   my $string = tests($ser);
   like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Pretty"/>|, 'Pretty generator is correct');
-  like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
+  like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="rdf:langString">Dahut</dd>|, 'Literals OK');
 };
 
 subtest 'Pretty generator with interlink' => sub {
@@ -84,7 +84,7 @@ subtest 'Pretty generator with interlink' => sub {
 	  'Assignment OK');
   my $string = tests($ser);
   like($string, qr|<main>\s?<div|, 'div element just local part');
-  like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="xsd:langString">Dahut</dd>|, 'Literals OK');
+  like($string, qr|<dd property="ex:title" class="typed-literal" xml:lang="fr" datatype="rdf:langString">Dahut</dd>|, 'Literals OK');
 };
 
 subtest 'Pretty generator with Note' => sub {
