@@ -169,6 +169,16 @@ L<https://github.com/kjetilk/p5-atteanx-serializer-rdfa/issues>.
 
 L<RDF::RDFa::Generator>, L<RDF::Trine::Serializer::RDFa>.
 
+=head1 TODO
+
+=over
+
+=item * The C<style> attribute may be implemented with better constraints.
+
+=item * Make the writers (i.e. the code actually writing the DOM) configurable.
+
+=back
+
 =head1 AUTHOR
 
 Kjetil Kjernsmo E<lt>kjetilk@cpan.orgE<gt>.
