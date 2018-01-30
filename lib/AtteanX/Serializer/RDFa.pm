@@ -110,11 +110,13 @@ L<Attean::API::AbbreviatingSerializer>.
 
 =head2 Attributes
 
-=over
 
 In addition to attributes required by L<Attean::API::TripleSerializer>
 that should not be a concern to users, the following attributes can be
 set:
+
+=over
+
 
 =item C<< style >>
 
