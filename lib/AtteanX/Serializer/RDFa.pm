@@ -142,7 +142,23 @@ example.
 
 =back
 
+=head2 Methods
 
+This implements two required methods:
+
+=over
+
+=item C<< serialize_iter_to_io( $fh, $iterator ) >>
+
+Serializes the elements from the L<Attean::API::Iterator> C<< $iterator >> to
+the L<IO::Handle> object C<< $fh >>.
+
+=item C<< serialize_iter_to_bytes( $fh ) >>
+
+Serializes the elements from the L<Attean::API::Iterator> C<< $iterator >>
+and returns the serialization as a UTF-8 encoded byte string.
+
+=back
 
 =head1 BUGS
 
