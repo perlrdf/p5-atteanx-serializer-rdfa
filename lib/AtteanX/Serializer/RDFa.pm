@@ -1,8 +1,8 @@
+package AtteanX::Serializer::RDFa;
+
 use 5.010001;
 use strict;
 use warnings;
-
-package AtteanX::Serializer::RDFa;
 
 our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.001_01';
