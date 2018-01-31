@@ -4,3 +4,7 @@
 	issued  2018-01-30;
 	label   "Initial release".
 
+`AtteanX-Serializer-RDFa 0.001_02 cpan:KJETILK`
+	issued  2018-02-01;
+	label   "Fix langString".
+
