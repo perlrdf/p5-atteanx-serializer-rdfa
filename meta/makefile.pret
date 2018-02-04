@@ -8,7 +8,7 @@
     :test-requirement       [ :on "Module::Load::Conditional"^^:CpanId ];
     :runtime-requirement    [ :on "perl 5.010001"^^:CpanId ];
     :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];
-    :runtime-requirement    [ :on "Attean 0.18_01"^^:CpanId ];
+    :runtime-requirement    [ :on "Attean 0.19"^^:CpanId ];
     :runtime-requirement    [ :on "Moo"^^:CpanId ];
     :runtime-requirement    [ :on "RDF::RDFa::Generator 0.199_05"^^:CpanId ];
     :develop-recommendation [ :on "Dist::Inkt 0.001"^^:CpanId ];
