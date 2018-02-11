@@ -8,6 +8,7 @@
     :test-requirement       [ :on "Module::Load::Conditional"^^:CpanId ];
     :runtime-requirement    [ :on "perl 5.010001"^^:CpanId ];
     :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];
+    :runtime-requirement    [ :on "namespace::clean"^^:CpanId ];
     :runtime-requirement    [ :on "Attean 0.019"^^:CpanId ];
     :runtime-requirement    [ :on "Moo"^^:CpanId ];
     :runtime-requirement    [ :on "RDF::RDFa::Generator 0.200"^^:CpanId ];
