@@ -10,7 +10,7 @@
     :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];
     :runtime-requirement    [ :on "Attean 0.019"^^:CpanId ];
     :runtime-requirement    [ :on "Moo"^^:CpanId ];
-    :runtime-requirement    [ :on "RDF::RDFa::Generator 0.199_06"^^:CpanId ];
+    :runtime-requirement    [ :on "RDF::RDFa::Generator 0.200"^^:CpanId ];
     :develop-recommendation [ :on "Dist::Inkt 0.001"^^:CpanId ];
     .
 
