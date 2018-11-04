@@ -16,7 +16,7 @@ use Attean::RDF qw(iri);
 use URI::NamespaceMap;
 use Module::Load::Conditional qw[check_install];
 
-my $rdfns = check_install( module => 'RDF::NS', version => 20130802);
+my $rdfns = check_install( module => 'RDF::NS', version => 20160408);
 
 my $store = Attean->get_store('Memory')->new();
 my $parser = Attean->get_parser('Turtle')->new(base=>'http://example.org/');
