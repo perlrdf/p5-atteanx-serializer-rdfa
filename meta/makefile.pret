@@ -8,6 +8,7 @@
     :test-requirement       [ :on "Module::Load::Conditional"^^:CpanId ];
     :test-requirement       [ :on "URI::NamespaceMap"^^:CpanId ];
     :test-recommendation    [ :on "RDF::NS 20160408"^^:CpanId ];
+    :test-recommendation    [ :on "RDF::Prefixes"^^:CpanId ];
     :runtime-requirement    [ :on "perl 5.010001"^^:CpanId ];
     :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];
     :runtime-requirement    [ :on "namespace::clean"^^:CpanId ];
