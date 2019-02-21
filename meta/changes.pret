@@ -4,3 +4,9 @@
 	issued  2018-02-11;
 	label   "Initial release".
 
+`AtteanX-Serializer-RDFa 0.100 cpan:KJETILK`
+    issued  2019-02-21;
+    label   "Fix tests" ;
+    changeset [
+	item [ label "Used the wrong prefix generator module in tests."@en ; a dcs:Bugfix ] ;
+    ] .
