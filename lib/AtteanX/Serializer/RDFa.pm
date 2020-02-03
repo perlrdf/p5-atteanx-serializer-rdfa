@@ -8,7 +8,7 @@ our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.100';
 
 use Moo;
-use Types::Standard qw(Str Maybe HashRef ConsumerOf);
+use Types::Standard qw(Str Maybe HashRef ConsumerOf InstanceOf);
 use Encode qw(encode);
 use Scalar::Util qw(blessed);
 use Attean;
@@ -16,6 +16,7 @@ use Attean::ListIterator;
 use namespace::clean;
 use Attean::RDF qw(iri);
 use RDF::RDFa::Generator;
+use XML::LibXML;
 
 
 has 'canonical_media_type' => (is => 'ro', isa => Str, init_arg => undef, default => 'application/xhtml+xml');
@@ -27,7 +28,11 @@ has 'style' => (is => 'ro', isa => Maybe[Str]); # TODO: might be improved with O
 
 has 'generator_options' => (is => 'ro', isa => HashRef, default => sub { return {} });
 
+has 'document' => (is => 'ro', isa => InstanceOf['XML::LibXML::Document'], lazy => 1, builder => '_build_document');
+
 has _opts => (is => 'rw', isa => HashRef, lazy => 1, builder => '_build_opts');
+
+has _iter => (is => 'rw', isa => ConsumerOf['Attean::API::Iterator'], lazy => 1);
 
 sub _build_opts {
   my $self = shift;
@@ -45,25 +50,25 @@ sub media_types {
   return [qw(application/xhtml+xml text/html)];
 }
 
-sub _make_document {
+sub _build_document {
   my ($self, $iter) = @_;
   my $store = Attean->get_store('Memory')->new();
-  $store->add_iter($iter->as_quads(iri('http://graph.invalid/')));
+  $store->add_iter($self->_iter->as_quads(iri('http://graph.invalid/')));
   my $model = Attean::QuadModel->new( store => $store );
   return RDF::RDFa::Generator->new(%{$self->_opts})->create_document($model, %{$self->generator_options});
 }
 
 sub serialize_iter_to_io {
   my ($self, $io, $iter) = @_;
-  my $document = $self->_make_document($iter);
-  return $document->toFH($io);
+  $self->_iter($iter);
+  return $self->document->toFH($io);
 
 }
 
 sub serialize_iter_to_bytes {
   my ($self, $iter) = @_;
-  my $document = $self->_make_document($iter);
-  return $document->toString;
+  $self->_iter($iter);
+  return $self->document->toString;
 }
 
 1;
