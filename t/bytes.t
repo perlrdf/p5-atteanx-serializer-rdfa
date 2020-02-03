@@ -102,6 +102,35 @@ subtest 'Pretty generator with Note' => sub {
 };
 
 
+subtest 'Hidden generator on existing document' => sub {
+  my $html = <<'_EOH_';
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml" version="XHTML+RDFa 1.0">
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+<title>Existing document test</title>
+</head>
+<body lang="en">
+<h1>Existing document test</h1>
+</body>
+</html>
+_EOH_
+  my $dom = XML::LibXML->load_xml( string => $html );
+
+  $iter->reset;
+  ok(my $ser = Attean->get_serializer('RDFa')->new(base => iri('http://example.org/'),
+																	namespaces => $ns,
+																	style => 'HTML::Hidden',
+																	document => $dom,
+																  ),
+	  'Assignment OK');
+  my $string = tests($ser);
+  like($string, qr|<meta name="generator" value="RDF::RDFa::Generator::HTML::Hidden"/>|, 'Hidden generator is correct');
+  like($string, qr|<body>\s?<i|, 'i element just local part');
+  like($string, qr|resource="http://example.org/Bar"|, 'Object present');
+  like($string, qr|property="ex:title" content="Dahut"|, 'Literals OK');
+};
+
+
 sub tests {
   my $ser = shift;
   my $string = $ser->serialize_iter_to_bytes($iter);
