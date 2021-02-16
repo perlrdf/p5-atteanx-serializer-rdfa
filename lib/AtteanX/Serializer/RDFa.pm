@@ -45,6 +45,8 @@ sub media_types {
   return [qw(application/xhtml+xml text/html)];
 }
 
+sub file_extensions { return [qw(html xhtml)] };
+
 sub _make_document {
   my ($self, $iter) = @_;
   my $store = Attean->get_store('Memory')->new();
