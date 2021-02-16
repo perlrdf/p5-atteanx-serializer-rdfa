@@ -10,3 +10,15 @@
     changeset [
 	item [ label "Used the wrong prefix generator module in tests."@en ; a dcs:Bugfix ] ;
     ] .
+
+`AtteanX-Serializer-RDFa 0.110 cpan:KJETILK`
+    issued  2021-02-16;
+    label   "Add required file_extentions method" ;
+    changeset [
+      item [ label "Attean 0.029 requires file_extensions method."@en ;
+             dcs:blame cpan:JONASS ;
+	     a dcs:Update ] ;
+      item [ label "Make a Markdown README."@en ; a dcs:Update ] ;
+      item [ label "Bring test coverage to 100%."@en ; a dcs:Addition ] ;
+      item [ label "Small documentation improvements."@en ; a dcs:Addition ] ;	
+    ] .

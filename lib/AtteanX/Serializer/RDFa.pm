@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 our $AUTHORITY = 'cpan:KJETILK';
-our $VERSION   = '0.100';
+our $VERSION   = '0.110';
 
 use Moo;
 use Types::Standard qw(Str Maybe HashRef ConsumerOf);
