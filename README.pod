@@ -1,1 +1,0 @@
-lib/AtteanX/Serializer/RDFa.pm
