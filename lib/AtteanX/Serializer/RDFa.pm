@@ -148,7 +148,7 @@ example.
 
 =head2 Methods
 
-This implements two required methods:
+This implements four required methods:
 
 =over
 
@@ -161,6 +161,10 @@ the L<IO::Handle> object C<< $fh >>.
 
 Serializes the elements from the L<Attean::API::Iterator> C<< $iterator >>
 and returns the serialization as a UTF-8 encoded byte string.
+
+=item C<< media_types >> and C<< file_extensions >>
+
+Declares that HTML media types are used for the output of this module.
 
 =back
 
