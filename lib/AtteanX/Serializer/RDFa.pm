@@ -85,10 +85,10 @@ AtteanX::Serializer::RDFa - RDFa Serializer for Attean
  use Attean;
  use Attean::RDF qw(iri);
  use URI::NamespaceMap;
- 
+
  my $ser = Attean->get_serializer('RDFa')->new;
  my $string = $ser->serialize_iter_to_bytes($iter);
- 
+
  my $ns = URI::NamespaceMap->new( { ex => iri('http://example.org/') });
  $ns->guess_and_add('foaf');
  my $note = RDF::RDFa::Generator::HTML::Pretty::Note->new(iri('http://example.org/foo'), 'This is a Note');
